@@ -28,7 +28,7 @@ cd ~/four_wheel_robot_sim/src
 
 2. 克隆仓库：
 
-git clone https://github.com/yourusername/four_wheel_robot_sim.git
+git clone https://github.com/yfc233/four_wheel_robot_sim.git
 
 3. 安装依赖：
 
