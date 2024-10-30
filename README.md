@@ -59,3 +59,11 @@ git remote add origin https://github.com/yfc233/four_wheel_robot_sim.git
 # 推送到主分支
 git branch -M main
 git push -u origin main
+
+
+首先拉取远程仓库的更改：
+git pull origin main --rebase
+如果有冲突，解决冲突后再次推送：
+git push -u origin main
+如果你确定要强制推送本地更改（会覆盖远程仓库的所有更改，请谨慎使用），可以使用：
+git push -u origin main --force
