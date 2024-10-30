@@ -1,0 +1,51 @@
+# RViz2配置文件
+# 用于可视化机器人模型和传感器数据
+
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1  # 全局显示选项
+        - /Status1         # 状态信息
+        - /RobotModel1     # 机器人模型显示
+        - /PointCloud21    # 激光雷达点云显示
+        - /Image1          # 左相机图像显示
+        - /Image2          # 右相机图像显示
+      Splitter Ratio: 0.5
+    Tree Height: 719
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz_default_plugins/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Name: Grid
+    - Alpha: 0.6
+      Class: rviz_default_plugins/RobotModel
+      Description Topic: robot_description
+      Enabled: true
+      Name: RobotModel
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Class: rviz_default_plugins/PointCloud2
+      Topic: /velodyne/points
+      Enabled: true
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Color Transformer: Intensity
+      Channel Name: intensity
+      Style: Points
+    - Class: rviz_default_plugins/Image
+      Topic: /stereo_camera/left/image_raw
+      Enabled: true
+      Name: LeftImage
+    - Class: rviz_default_plugins/Image
+      Topic: /stereo_camera/right/image_raw
+      Enabled: true
+      Name: RightImage
+  Global Options:
+    Fixed Frame: map
+    Frame Rate: 30

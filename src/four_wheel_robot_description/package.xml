@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>four_wheel_robot_description</name>
+  <version>0.0.1</version>
+  <description>Four wheel robot description package</description>
+  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>rviz2</depend>
+  <depend>velodyne_gazebo_plugins</depend>
+  <depend>gazebo_plugins</depend>
+  <depend>stereo_image_proc</depend>
+  <depend>rqt_gui</depend>
+  <depend>rqt_image_view</depend>
+  <depend>rqt_robot_monitor</depend>
+  <exec_depend>python3-pyqt5</exec_depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

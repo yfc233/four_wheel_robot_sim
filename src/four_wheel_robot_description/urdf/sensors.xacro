@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- 3D LiDAR宏定义 -->
+    <xacro:macro name="lidar_3d_sensor" params="name parent xyz rpy">
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <cylinder radius="0.05" length="0.07"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder radius="0.05" length="0.07"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.8"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+
+        <gazebo reference="${name}_link">
+            <sensor type="ray" name="${name}">
+                <pose>0 0 0 0 0 0</pose>
+                <visualize>false</visualize>
+                <update_rate>10</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>1800</samples>
+                            <resolution>1</resolution>
+                            <min_angle>-3.14159</min_angle>
+                            <max_angle>3.14159</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>16</samples>
+                            <resolution>1</resolution>
+                            <min_angle>-0.261799</min_angle>
+                            <max_angle>0.261799</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.3</min>
+                        <max>100.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                </ray>
+                <plugin name="${name}_controller" filename="libgazebo_ros_ray_sensor.so">
+                    <ros>
+                        <namespace>/${name}</namespace>
+                        <remapping>~/out:=points</remapping>
+                    </ros>
+                    <output_type>sensor_msgs/PointCloud2</output_type>
+                    <frame_name>${name}_link</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+
+    <!-- 立体相机宏定义 -->
+    <xacro:macro name="stereo_camera_sensor" params="name parent xyz rpy baseline">
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <box size="0.02 ${baseline + 0.02} 0.02"/>
+                </geometry>
+                <material name="red"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.02 ${baseline + 0.02} 0.02"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+
+        <!-- 左相机 -->
+        <gazebo reference="${name}_link">
+            <sensor type="camera" name="${name}_left">
+                <update_rate>30.0</update_rate>
+                <camera>
+                    <horizontal_fov>1.3962634</horizontal_fov>
+                    <image>
+                        <width>800</width>
+                        <height>600</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="${name}_left_controller" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>/${name}</namespace>
+                        <remapping>image_raw:=left/image_raw</remapping>
+                        <remapping>camera_info:=left/camera_info</remapping>
+                    </ros>
+                    <camera_name>left</camera_name>
+                    <frame_name>${name}_link</frame_name>
+                    <hack_baseline>0.0</hack_baseline>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+        <!-- 右相机 -->
+        <gazebo reference="${name}_link">
+            <sensor type="camera" name="${name}_right">
+                <update_rate>30.0</update_rate>
+                <camera>
+                    <horizontal_fov>1.3962634</horizontal_fov>
+                    <image>
+                        <width>800</width>
+                        <height>600</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.02</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="${name}_right_controller" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>/${name}</namespace>
+                        <remapping>image_raw:=right/image_raw</remapping>
+                        <remapping>camera_info:=right/camera_info</remapping>
+                    </ros>
+                    <camera_name>right</camera_name>
+                    <frame_name>${name}_link</frame_name>
+                    <hack_baseline>${baseline}</hack_baseline>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+
+    <!-- IMU宏定义 -->
+    <xacro:macro name="imu_sensor" params="name parent xyz rpy">
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+                <material name="red"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.1"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+        </link>
+
+        <gazebo reference="${name}_link">
+            <sensor type="imu" name="${name}">
+                <always_on>true</always_on>
+                <update_rate>100</update_rate>
+                <visualize>true</visualize>
+                <plugin name="${name}_controller" filename="libgazebo_ros_imu_sensor.so">
+                    <ros>
+                        <namespace>/${name}</namespace>
+                        <remapping>~/out:=data</remapping>
+                    </ros>
+                    <frame_name>${name}_link</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>four_wheel_robot_navigation</name>
+  <version>0.0.1</version>
+  <description>Four wheel robot navigation package</description>
+  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>nav2_bringup</depend>
+  <depend>nav2_msgs</depend>
+  <depend>nav2_planner</depend>
+  <depend>nav2_controller</depend>
+  <depend>nav2_recoveries</depend>
+  <depend>nav2_bt_navigator</depend>
+  <depend>nav2_costmap_2d</depend>
+  <depend>nav2_core</depend>
+  <depend>nav2_util</depend>
+  <depend>nav2_behaviors</depend>
+  <depend>nav2_navfn_planner</depend>
+  <depend>nav2_regulated_pure_pursuit_controller</depend>
+  <depend>nav2_rotation_shim_controller</depend>
+  <depend>nav2_waypoint_follower</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

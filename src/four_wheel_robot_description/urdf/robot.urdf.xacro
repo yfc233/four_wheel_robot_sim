@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="four_wheel_robot">
+
+    <!-- 包含机器人核心定义和传感器定义 -->
+    <xacro:include filename="$(find four_wheel_robot_description)/urdf/robot_core.xacro"/>
+    <xacro:include filename="$(find four_wheel_robot_description)/urdf/sensors.xacro"/>
+
+    
+    <!-- 添加3d激光雷达 -->
+    <xacro:lidar_3d_sensor name="velodyne" 
+                          parent="base_link" 
+                          xyz="0.2 0 ${chassis_height/2 + 0.05}" 
+                          rpy="0 0 0"/>
+    <!-- 添加摄像头 -->
+   <xacro:stereo_camera_sensor name="stereo_camera" 
+                               parent="base_link" 
+                               xyz="${chassis_length/2} 0 ${chassis_height/2}" 
+                               rpy="0 0 0"
+                               baseline="0.12"/>
+    <!-- 添加IMU -->    
+    <xacro:imu_sensor name="imu" parent="base_link" xyz="0 0 ${chassis_height/2}" rpy="0 0 0"/>
+
+    <!-- Gazebo颜色材质 -->
+    <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <gazebo reference="front_left_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="front_right_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="rear_left_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="rear_right_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- 差速驱动插件 -->
+    <gazebo>
+        <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+            <left_joint>front_left_wheel_joint rear_left_wheel_joint</left_joint>
+            <right_joint>front_right_wheel_joint rear_right_wheel_joint</right_joint>
+            <wheel_separation>${chassis_width + wheel_width}</wheel_separation>
+            <wheel_diameter>${2 * wheel_radius}</wheel_diameter>
+            
+            <max_wheel_torque>20</max_wheel_torque>
+            <max_wheel_acceleration>1.0</max_wheel_acceleration>
+            
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+            
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>false</publish_wheel_tf>
+            
+            <odometry_source>world</odometry_source>
+            <update_rate>30</update_rate>
+            
+            <ros>
+                <remapping>cmd_vel:=cmd_vel</remapping>
+                <remapping>odom:=odom</remapping>
+            </ros>
+        </plugin>
+    </gazebo>
+
+</robot>

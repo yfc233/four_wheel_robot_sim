@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- 机器人参数 -->
+    <xacro:property name="chassis_length" value="0.6"/>
+    <xacro:property name="chassis_width" value="0.4"/>
+    <xacro:property name="chassis_height" value="0.2"/>
+    <xacro:property name="wheel_radius" value="0.1"/>
+    <xacro:property name="wheel_width" value="0.05"/>
+    
+    <!-- 材质定义 -->
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+   
+    <!-- 添加底盘碰撞属性-->
+    <gazebo reference="base_link">
+        <material>Gazebo/Blue</material>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <selfCollide>true</selfCollide>
+        <gravity>true</gravity>
+        
+        <!-- 添加碰撞传感器 -->
+        <sensor name="contact_sensor" type="contact">
+            <always_on>true</always_on>
+            <update_rate>30.0</update_rate>
+            <contact>
+                <collision>base_link_collision</collision>
+            </contact>
+            <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+                <ros>
+                    <remapping>~/bumper_states:=bumper_states</remapping>
+                </ros>
+                <frame_name>base_link</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <!-- 添加基座链接 -->
+    <link name="base_footprint"/>
+    
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- 底盘link -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <material name="blue"/>
+            <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 0"/>
+            <inertia ixx="0.1" ixy="0" ixz="0" 
+                     iyy="0.1" iyz="0" 
+                     izz="0.1"/>
+        </inertial>
+    </link>
+
+    <!-- 更新车轮碰撞属性 -->
+    <xacro:macro name="wheel" params="prefix x_offset y_offset">
+      <link name="${prefix}_wheel">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.5"/>
+                <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+            </inertial>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="${prefix}_wheel"/>
+            <origin xyz="${x_offset} ${y_offset} 0" rpy="${pi/2} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+        <gazebo reference="${prefix}_wheel">
+            <material>Gazebo/Black</material>
+            <mu1>1.0</mu1>
+            <mu2>1.0</mu2>
+            <kp>1000000.0</kp>
+            <kd>100.0</kd>
+            <minDepth>0.001</minDepth>
+            <maxVel>1.0</maxVel>
+            <fdir1>1 0 0</fdir1>
+        </gazebo>
+    </xacro:macro>
+    
+
+    <!-- 使用宏创建四个轮子 -->
+    <xacro:wheel prefix="front_left" x_offset="${chassis_length/4}" y_offset="${chassis_width/2 + wheel_width/2}"/>
+    <xacro:wheel prefix="front_right" x_offset="${chassis_length/4}" y_offset="-${chassis_width/2 + wheel_width/2}"/>
+    <xacro:wheel prefix="rear_left" x_offset="-${chassis_length/4}" y_offset="${chassis_width/2 + wheel_width/2}"/>
+    <xacro:wheel prefix="rear_right" x_offset="-${chassis_length/4}" y_offset="-${chassis_width/2 + wheel_width/2}"/>
+        
+        
+
+</robot> 
