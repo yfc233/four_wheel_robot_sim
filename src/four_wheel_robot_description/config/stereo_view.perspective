@@ -1,0 +1,65 @@
+{
+  "keys": {},
+  "groups": {
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "repr": "{'rqt_image_view/ImageView': [1, 2]}",
+          "type": "repr"
+        }
+      },
+      "groups": {
+        "plugin__rqt_image_view__ImageView__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__ImageViewWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Left Camera'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                }
+              }
+            },
+            "plugin": {
+              "keys": {
+                "topic": {
+                  "repr": "'/stereo_camera/left/image_raw'",
+                  "type": "repr"
+                }
+              }
+            }
+          }
+        },
+        "plugin__rqt_image_view__ImageView__2": {
+          "keys": {},
+          "groups": {
+            "dock_widget__ImageViewWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'Right Camera'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                }
+              }
+            },
+            "plugin": {
+              "keys": {
+                "topic": {
+                  "repr": "'/stereo_camera/right/image_raw'",
+                  "type": "repr"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

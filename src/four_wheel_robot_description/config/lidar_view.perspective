@@ -1,0 +1,40 @@
+{
+  "keys": {},
+  "groups": {
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "repr": "{'rqt_topic/TopicPlugin': [1]}",
+          "type": "repr"
+        }
+      },
+      "groups": {
+        "plugin__rqt_topic__TopicPlugin__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__TopicWidget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'LiDAR Point Cloud'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                }
+              }
+            },
+            "plugin": {
+              "keys": {
+                "tree_widget_header_state": {
+                  "repr": "b'000000ff00000000000000010000000000000000010000000000000000000000000000000000000480000000050101000100000000000000000500000064ffffffff000000810000000300000005000001f300000001000000030000011b0000000100000003000000680000000100000003000000390000000100000003000000810000000100000003000003e80000000064'",
+                  "type": "repr"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

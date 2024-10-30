@@ -53,3 +53,9 @@ ros2 launch four_wheel_robot_rviz rviz_config.launch.py
 
 希望这个项目能帮助你快速上手四轮机器人的仿真！如果有任何问题或建议，请随时联系我。
 
+# 添加远程仓库
+git remote add origin https://github.com/yfc233/four_wheel_robot_sim.git
+
+# 推送到主分支
+git branch -M main
+git push -u origin main

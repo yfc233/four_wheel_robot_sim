@@ -2,26 +2,29 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>four_wheel_robot_description</name>
-  <version>0.0.1</version>
-  <description>Four wheel robot description package</description>
-  <maintainer email="your_email@example.com">Your Name</maintainer>
-  <license>Apache License 2.0</license>
+  <version>0.0.0</version>
+  <description>四轮机器人描述包</description>
+  <maintainer email="your-email@example.com">yfc</maintainer>
+  <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>urdf</depend>
   <depend>xacro</depend>
   <depend>robot_state_publisher</depend>
   <depend>joint_state_publisher</depend>
   <depend>joint_state_publisher_gui</depend>
   <depend>rviz2</depend>
+  <depend>rviz_common</depend>
+  <depend>rviz_default_plugins</depend>
   <depend>velodyne_gazebo_plugins</depend>
   <depend>gazebo_plugins</depend>
   <depend>stereo_image_proc</depend>
   <depend>rqt_gui</depend>
   <depend>rqt_image_view</depend>
   <depend>rqt_robot_monitor</depend>
+  <depend>image_transport_plugins</depend>
+  <depend>pointcloud_to_laserscan</depend>
   <exec_depend>python3-pyqt5</exec_depend>
   
   <export>

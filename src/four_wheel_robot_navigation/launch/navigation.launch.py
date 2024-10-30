@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import Command, LaunchConfiguration, PythonExpression
+from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -12,48 +14,60 @@ def generate_launch_description():
     pkg_share = FindPackageShare('four_wheel_robot_navigation').find('four_wheel_robot_navigation')
     nav2_bringup_dir = FindPackageShare('nav2_bringup').find('nav2_bringup')
     
-    # 设置参数文件路径
-    nav_params_path = os.path.join(pkg_share, 'config', 'nav2_params.yaml')
-    map_file = os.path.join(pkg_share, 'maps', 'map.yaml')
+    # 配置文件路径
+    nav2_config = os.path.join(pkg_share, 'config', 'nav2_params.yaml')
+    nav2_launch_file = os.path.join(nav2_bringup_dir, 'launch', 'bringup_launch.py')
     
     # 声明参数
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
-    autostart = LaunchConfiguration('autostart', default='true')
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    autostart = LaunchConfiguration('autostart')
     
-    # 包含Nav2 Bringup launch文件
-    nav2_bringup_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(nav2_bringup_dir, 'launch', 'bringup_launch.py')),
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use simulation time'
+    )
+    
+    declare_autostart_cmd = DeclareLaunchArgument(
+        'autostart',
+        default_value='true',
+        description='Automatically start nav2'
+    )
+    
+    # Nav2 节点
+    nav2_bringup_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(nav2_launch_file),
         launch_arguments={
-            'map': map_file,
             'use_sim_time': use_sim_time,
-            'params_file': nav_params_path,
-            'autostart': autostart
+            'autostart': autostart,
+            'params_file': nav2_config,
+            'map': ''  # 使用SLAM时不需要地图
         }.items()
     )
     
-    # RVIZ配置
-    rviz_config_file = os.path.join(pkg_share, 'rviz', 'nav2_config.rviz')
-    
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        arguments=['-d', rviz_config_file],
-        parameters=[{'use_sim_time': use_sim_time}],
-        output='screen'
+    # SLAM 节点
+    slam_toolbox_cmd = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        name='slam_toolbox',
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'max_laser_range': 20.0,
+            'resolution': 0.05,
+            'map_update_interval': 5.0,
+            'max_update_rate': 1.0,
+            'enable_interactive_mode': True,
+            'transform_timeout': 0.2,
+            'map_frame': 'map',
+            'base_frame': 'base_footprint',
+            'odom_frame': 'odom'
+        }]
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use simulation (Gazebo) clock if true'),
-            
-        DeclareLaunchArgument(
-            'autostart',
-            default_value='true',
-            description='Automatically start up the nav2 stack'),
-            
-        nav2_bringup_launch,
-        rviz_node
+        declare_use_sim_time_cmd,
+        declare_autostart_cmd,
+        slam_toolbox_cmd,
+        nav2_bringup_cmd
     ]) 
