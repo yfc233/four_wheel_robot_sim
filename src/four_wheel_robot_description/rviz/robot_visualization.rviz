@@ -1,0 +1,55 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1
+        - /RobotModel1
+        - /PointCloud21
+      Splitter Ratio: 0.5
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      
+    - Class: rviz_default_plugins/RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic: /robot_description
+      Alpha: 1.0
+      
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Topic: /velodyne/points
+      Style: Points
+      Size (m): 0.01
+      Color: 255 255 255
+      Alpha: 1.0
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Topic: /stereo_camera/left/image_raw
+      Name: LeftCamera
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Topic: /stereo_camera/right/image_raw
+      Name: RightCamera
+    - Class: rviz_default_plugins/Map
+      Enabled: true
+      Topic: /global_costmap/costmap
+      Name: CostMap
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Topic: /plan
+      Name: NavPath
+  Global Options:
+    Fixed Frame: base_footprint
+    Frame Rate: 30
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 10 

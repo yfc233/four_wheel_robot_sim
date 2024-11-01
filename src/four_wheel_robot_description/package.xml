@@ -9,24 +9,20 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>rclcpp</depend>
-  <depend>xacro</depend>
-  <depend>robot_state_publisher</depend>
-  <depend>joint_state_publisher</depend>
-  <depend>joint_state_publisher_gui</depend>
-  <depend>rviz2</depend>
-  <depend>rviz_common</depend>
-  <depend>rviz_default_plugins</depend>
-  <depend>velodyne_gazebo_plugins</depend>
-  <depend>gazebo_plugins</depend>
-  <depend>stereo_image_proc</depend>
-  <depend>rqt_gui</depend>
-  <depend>rqt_image_view</depend>
-  <depend>rqt_robot_monitor</depend>
-  <depend>image_transport_plugins</depend>
-  <depend>pointcloud_to_laserscan</depend>
-  <exec_depend>python3-pyqt5</exec_depend>
-  
+  <!-- 构建依赖 -->
+  <build_depend>xacro</build_depend>
+
+  <!-- 执行依赖 -->
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros2_control</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>velodyne_gazebo_plugins</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

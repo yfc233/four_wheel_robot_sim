@@ -1,0 +1,34 @@
+ # src/four_wheel_robot_nav/config/slam_params.yaml
+ ---
+ slam_toolbox:
+   ros__parameters:
+     use_sim_time: true
+     slam_mode: mapping  # or 'localization', choose as needed
+     map_update_interval: 5.0
+     resolution: 0.05
+     publish_map: true
+     failure_restart_delay: 5.0
+     # 以下是一些常用参数，您可以根据需要进行调整
+     scan_topic: "/scan"
+     odom_frame: "odom"
+     map_frame: "map"
+     base_frame: "base_footprint"
+     update_min_meters: 0.2
+     update_min_angle: 0.2
+     use_odometry: true
+     use_pose_stamped: false
+     pose_stamped_topic: "/initialpose"
+     # 更多参数请参考 slam_toolbox 的官方文档
+     
+     # 确保发布map到odom的变换
+     publish_frame_transforms: true
+     map_frame: map
+     odom_frame: odom
+     base_frame: base_footprint
+     transform_timeout: 0.2
+     tf_buffer_duration: 30.0
+     
+     # 提高地图更新和变换发布频率
+     map_update_interval: 5.0
+     transform_publish_period: 0.02
+     

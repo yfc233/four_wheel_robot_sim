@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CycloneDDS xmlns="https://cdds.io/config">
+    <Domain>
+        <General>
+            <NetworkInterfaceAddress>auto</NetworkInterfaceAddress>
+            <AllowMulticast>true</AllowMulticast>
+        </General>
+        <Internal>
+            <MaxMessageSize>65500</MaxMessageSize>
+            <EnableExpensiveChecks>false</EnableExpensiveChecks>
+            <SquashParticipants>true</SquashParticipants>
+            <LivelinessMonitoring>false</LivelinessMonitoring>
+        </Internal>
+        <Sizing>
+            <MaxSampleSize>65536</MaxSampleSize>
+        </Sizing>
+        <Tracing>
+            <Verbosity>warning</Verbosity>
+            <OutputFile>stdout</OutputFile>
+        </Tracing>
+    </Domain>
+</CycloneDDS>

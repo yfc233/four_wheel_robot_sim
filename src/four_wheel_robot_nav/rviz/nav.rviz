@@ -1,0 +1,60 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1
+        - /RobotModel1
+        - /Map1
+        - /LaserScan1
+        - /Image1
+        - /Image2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+    
+    - Class: rviz_default_plugins/RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic: /robot_description
+      
+    - Class: rviz_default_plugins/Map
+      Enabled: true
+      Topic: /map
+      Name: Map
+      Use Timestamp: false
+      
+    - Class: rviz_default_plugins/LaserScan
+      Enabled: true
+      Topic: /scan
+      Name: LaserScan
+      Use Timestamp: false
+      
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Topic: /four_wheel_robot/stereo_camera_left/image_raw
+      Name: LeftCamera
+      
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Topic: /four_wheel_robot/stereo_camera_right/image_raw
+      Name: RightCamera
+
+  Global Options:
+    Fixed Frame: map
+    Frame Rate: 30
+    
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 10
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0

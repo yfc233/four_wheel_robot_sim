@@ -1,0 +1,33 @@
+<!--
+  This Behavior Tree replans the global path periodically and implements recovery actions.
+-->
+<root main_tree_to_execute="NavigateWithReplanning">
+  <BehaviorTree ID="NavigateWithReplanning">
+    <RecoveryNode number_of_retries="6">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="1.0">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased">
+              <BlackboardCheckDouble key="distance_remaining" value="0.0" comparison="greater"/>
+            </ComputePathToPose>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="costmap/clear_entirely_global_costmap"/>
+          </RecoveryNode>
+        </RateController>
+        <RecoveryNode number_of_retries="2" name="FollowPath">
+          <FollowPath path="{path}" controller_id="FollowPath"/>
+          <ClearEntireCostmap name="ClearLocalCostmap-Context" service_name="costmap/clear_entirely_local_costmap"/>
+        </RecoveryNode>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <SequenceStar name="RecoveryActions">
+          <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="costmap/clear_entirely_local_costmap"/>
+          <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="costmap/clear_entirely_global_costmap"/>
+          <Spin spin_dist="1.57"/>
+          <Wait wait_duration="2"/>
+          <BackUp backup_dist="0.3" backup_speed="0.1"/>
+        </SequenceStar>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
